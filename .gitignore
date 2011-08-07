@@ -1,3 +1,4 @@
 build/
 dist/
 reparser.egg-info/
+*.pyc
