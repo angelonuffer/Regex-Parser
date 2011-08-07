@@ -26,5 +26,4 @@ Install using latest version::
     $ git clone git@github.com:angelonuffer/Regex-Parser.git
     # python setup.py install
 
-*NOTE: the second command needs be runned with root user
-        you can use the sudo application for this
+*NOTE: the second command needs be runned with root user, you can use the sudo application for this
