@@ -33,3 +33,8 @@ class TestParser(unittest.TestCase):
         parser.register(r"^(?P<key>[^=]*)=(?P<value>.*)$", example2)
         return_list = parser.search("a=1\nb=2")
         return_list |should |equal_to(["a = 1", "b = 2"])
+        parser.methods.clear()
+        example3 = lambda year, month, day: "%s/%s/%s" % (year, month, day)
+        parser.register(r"^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})$", example3)
+        return_list = parser.search("1970-01-01")
+        return_list |should |equal_to(["1970/01/01"])

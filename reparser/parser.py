@@ -17,6 +17,14 @@ class Parser(object):
     def actions(self):
         return self.methods.values()
 
+    @property
+    def patterns_without_groups(self):
+        return map(lambda pattern: re.sub(r"\(\?P<[^>]+>([^)]+)\)", r"\1", pattern), self.patterns)
+
+    @property
+    def methods_without_groups(self):
+        return zip(self.patterns_without_groups, self.actions)
+
     def get(self, pattern):
         return self.methods.get(pattern)
 
@@ -28,10 +36,10 @@ class Parser(object):
 
     def search(self, text):
         result = []
-        scanner = re.Scanner(self.methods.items(), flags=re.MULTILINE)
+        scanner = re.Scanner(self.methods_without_groups, flags=re.MULTILINE)
         scan = scanner.scanner.scanner(text)
         for match in self._match_iter(scan):
-            pattern = scanner.lexicon[match.lastindex-1][0]
-            action = scanner.lexicon[match.lastindex-1][1]
+            pattern = self.patterns[match.lastindex-1]
+            action = self.actions[match.lastindex-1]
             result.append(action(**re.search(pattern, match.group()).groupdict()))
         return result
